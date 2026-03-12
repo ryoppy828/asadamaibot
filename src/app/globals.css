@@ -1,26 +1,271 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap");
+
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* ベースカラー 70% - Cloud Dancer */
+  --color-cloud: #F0EEE9;
+  --color-cloud-warm: #E8E5DF;
+  /* メインカラー 25% - Transformative Teal */
+  --color-teal: #005760;
+  --color-teal-light: #007A87;
+  --color-teal-dark: #003D44;
+  /* アクセントカラー 5% - Electric Fuchsia */
+  --color-fuchsia: #E0007A;
+  --color-fuchsia-light: #FF1A94;
+  /* テキスト */
+  --color-text-dark: #1A1A1A;
+  --color-text-mid: #4A4A4A;
+  --color-text-light: #8A8A8A;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ベース設定 */
+body {
+  font-family: "Noto Sans JP", -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--color-text-dark);
+  min-height: 100dvh;
+  /* メッシュグラデーション: Cloud Dancer + ティールの滲み */
+  background-color: #F0EEE9;
+  background-image:
+    radial-gradient(ellipse at 15% 10%, rgba(0, 87, 96, 0.06) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 20%, rgba(0, 87, 96, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(0, 87, 96, 0.05) 0%, transparent 60%),
+    radial-gradient(ellipse at 20% 60%, rgba(224, 0, 122, 0.02) 0%, transparent 40%);
+  background-attachment: fixed;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ===== Liquid Glass Effects ===== */
+
+/* ヘッダー・フッター用のLiquid Glass */
+.liquid-glass {
+  background: rgba(240, 238, 233, 0.65);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* カード・コンテナ用 Liquid Glass */
+.liquid-glass-card {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(20px) saturate(1.3);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.04),
+    0 1px 3px rgba(0, 0, 0, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+/* 入力フィールド用 Liquid Glass */
+.liquid-glass-input {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.liquid-glass-input:focus-within {
+  border-color: rgba(0, 87, 96, 0.3);
+  box-shadow:
+    0 4px 20px rgba(0, 87, 96, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* AI吹き出し - Teal */
+.bubble-ai {
+  background: linear-gradient(135deg, #005760 0%, #007A87 100%);
+  color: #FFFFFF;
+  box-shadow:
+    0 3px 12px rgba(0, 87, 96, 0.2),
+    0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+/* ユーザー吹き出し - White */
+.bubble-user {
+  background: #FFFFFF;
+  color: var(--color-text-dark);
+  box-shadow:
+    0 3px 12px rgba(0, 0, 0, 0.06),
+    0 1px 3px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* ===== Animations ===== */
+
+/* メッセージのフェードイン */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.animate-fade-in-up {
+  animation: fade-in-up 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ゆっくりバウンス */
+@keyframes bounce-slow {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 2.5s ease-in-out infinite;
+}
+
+/* パルスアニメーション（オンライン表示） */
+@keyframes pulse-dot {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(1.3);
+  }
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* 光の反射エフェクト */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-effect {
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.3) 50%,
+      rgba(255, 255, 255, 0) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* 浮遊する背景装飾 */
+@keyframes float-1 {
+
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  33% {
+    transform: translate(30px, -20px) scale(1.05);
+  }
+
+  66% {
+    transform: translate(-15px, 15px) scale(0.95);
+  }
+}
+
+@keyframes float-2 {
+
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  33% {
+    transform: translate(-25px, 10px) scale(0.95);
+  }
+
+  66% {
+    transform: translate(20px, -25px) scale(1.05);
+  }
+}
+
+.float-circle-1 {
+  animation: float-1 8s ease-in-out infinite;
+}
+
+.float-circle-2 {
+  animation: float-2 10s ease-in-out infinite;
+}
+
+/* ===== Scrollbar ===== */
+.chat-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.chat-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb {
+  background: rgba(0, 87, 96, 0.15);
+  border-radius: 3px;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 87, 96, 0.25);
+}
+
+/* ===== ボタン・ホバー ===== */
+.btn-accent {
+  background: linear-gradient(135deg, #E0007A 0%, #FF1A94 100%);
+  color: #FFFFFF;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(224, 0, 122, 0.25);
+}
+
+.btn-accent:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(224, 0, 122, 0.35);
+}
+
+.btn-accent:active {
+  transform: scale(0.97);
+}
+
+.btn-accent:disabled {
+  background: #C0C0C0;
+  box-shadow: none;
+  transform: none;
+}
+
+/* モードカード ホバー */
+.mode-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mode-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 8px 30px rgba(0, 87, 96, 0.1),
+    0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.mode-card:active {
+  transform: translateY(-1px);
 }

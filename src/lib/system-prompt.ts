@@ -10,23 +10,19 @@ const modeDescriptions: Record<ChatMode, string> = {
     equipment: "用具診断",
 };
 
-import * as fs from "fs";
-import * as path from "path";
+import { techniquePrompt } from "../prompts/technique";
+import { mytemPrompt } from "../prompts/mytem";
+import { equipmentPrompt } from "../prompts/equipment";
 
-// テキストファイルからプロンプトを読み込むヘルパー関数
-function readPromptFile(filename: string): string {
-    try {
-        const filePath = path.join(process.cwd(), "src", "prompts", filename);
-        return fs.readFileSync(filePath, "utf-8");
-    } catch (e) {
-        console.error(`Error reading prompt file: ${filename}`, e);
-        return "";
-    }
-}
+const modePrompts: Record<ChatMode, string> = {
+    technique: techniquePrompt,
+    mytem: mytemPrompt,
+    equipment: equipmentPrompt,
+};
 
 export function buildSystemPrompt(mode: ChatMode, dynamicContext: string = ""): string {
     const modeName = modeDescriptions[mode];
-    const modeRule = readPromptFile(`${mode}.txt`);
+    const modeRule = modePrompts[mode];
 
     // 用具診断モードの場合のみラバー＆ラケットデータベースを追加
     let extraContext = mode === "equipment" ? `\n\n${getRubberContext()}\n\n${getRacketContext()}` : "";

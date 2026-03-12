@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { buildSystemPrompt, ChatMode } from "@/lib/system-prompt";
 import { createClient } from "@supabase/supabase-js";
 
-
+export const runtime = "edge";
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
 // YouTubeの動的検索関数

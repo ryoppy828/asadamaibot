@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>TikTok Auth</title></head>
+<body>
+<p>認証処理中...</p>
+<script>
+const params = new URLSearchParams(window.location.search);
+const code = params.get('code');
+const state = params.get('state');
+const error = params.get('error');
+if (error) {
+  document.body.innerHTML = '<p>エラー: ' + error + '</p>';
+} else if (code && state) {
+  const local = 'http://127.0.0.1:8182/tiktok_callback?code=' + encodeURIComponent(code) + '&state=' + encodeURIComponent(state);
+  window.location.href = local;
+} else {
+  document.body.innerHTML = '<p>パラメータが見つかりません。</p>';
+}
+</script>
+</body>
+</html>
